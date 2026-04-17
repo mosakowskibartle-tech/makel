@@ -6,7 +6,7 @@
  */
 export const images = {
   hero: { background: '/images/rozet3logo.png', product: '/images/rozparal.png', luxury: '/images/paral.jpeg' },
-  videos: { heroBg: 'https://ru.files.fm/f/2xsy9dmwtg' },
+  videos: { heroBg: 'https://raw.githubusercontent.com/mosakowskibartle-tech/makel/main/public/videos/hero-bg.mp4' },
   stickyProducts: { first: '/images/rozparal.png', second: '/images/rozparal.png' },
   interiors: { livingRoom: '/images/loft.jpg', bathroom: '/images/vanna.jpg', kitchen: '/images/kuhna.jpg', bedroom: '/images/spal.jpg' },
   about: { factory: '/images/zavod1.jpg', background: '/images/mnogoroz.jpeg', global: '/images/rozet3logo.png', techFactory: '/images/zavod.jpg' },
