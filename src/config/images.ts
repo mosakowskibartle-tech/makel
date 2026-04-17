@@ -16,5 +16,5 @@ export const images = {
   accessories: { nudl: '/images/N.jpeg', mgp: '/images/MGP.jpeg', plugs: '/images/acsessuar.jpeg' },
   panels: { boards: '/images/box.jpeg' },
   special: { dimmers: '/images/dimmer.jpeg', hotelCards: '/images/hotel-room.jpeg' },
-  parallax: { abstract: '/images/abstract-gold.jpeg', luxuryInterior: '/images/luxury-interior.jpeg', techFactory: '/images/tech-factory.jpeg' },
+  parallax: { abstract: '/images/abstract-gold.jpeg', luxuryInterior: '/images/paral.jpeg', techFactory: '/images/zavod.jpeg' },
 };
