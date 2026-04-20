@@ -17,8 +17,8 @@ export default function ContactsPage() {
   };
 
   const sendToTelegram = async () => {
-    const botToken = 'YOUR_BOT_TOKEN';
-    const chatId = 'YOUR_CHAT_ID';
+    const botToken = '8751899088:AAF5St7XXVvyS4XQon_uIVrXOyXFc_Wy0DM';
+    const chatId = '574947799';
     const text = `📩 Новая заявка\n\n👤 ${form.name}\n🏢 ${form.company}\n📞 ${form.phone}\n📧 ${form.email}\n📍 ${form.city}\n📋 ${form.type}\n\n💬 ${form.message}`;
     try {
       await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
