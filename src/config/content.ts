@@ -41,7 +41,7 @@ export const company = {
 
   // ─── Логотип (положите файл в public/images/) ───
   logoUrl: '/images/logo.png',  // Оставьте пустым для буквы «M», или укажите путь: '/images/logo.png'
-  faviconUrl: '/favicon.svg', // Замените на '/images/favicon.png' если нужно
+  faviconUrl: '/favicon.ico', // Замените на '/images/favicon.png' если нужно
 };
 
 export const stats = [
