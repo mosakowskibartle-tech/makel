@@ -23,20 +23,49 @@ export default function ContactsPage() {
     return true;
   };
 
-  const handleSendEmail = () => {
+  const handleSendEmail = async () => {
     if (!validate()) return;
+    setSending(true);
+    setError('');
+
     try {
-      const subject = encodeURIComponent(`Заявка с сайта: ${form.company} — ${form.name}`);
-      const body = encodeURIComponent(
-        `Имя: ${form.name}\nКомпания: ${form.company}\nТелефон: ${form.phone}\nПочта: ${form.email}\nГород: ${form.city}\nТип: ${form.type}\n\nСообщение:\n${form.message || '—'}`
-      );
-      const a = document.createElement('a');
-      a.href = `mailto:${company.email}?subject=${subject}&body=${body}`;
-      a.target = '_blank';
-      a.click();
-      setSent(true);
-    } catch {
-      setError('Не удалось открыть почтовый клиент. Напишите нам: ' + company.email);
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '8ab8ad1a-e453-42b5-8803-53825fa069d9',
+          name: form.name,
+          company: form.company,
+          phone: form.phone,
+          email: form.email,
+          city: form.city,
+          type: form.type,
+          message: form.message || '—',
+          subject: `Заявка с сайта: ${form.company} — ${form.name}`,
+          from_name: 'Сайт Makel'
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        // Очищаем форму и делаем редирект
+        setForm({ name: '', company: '', phone: '', email: '', city: '', type: 'Дистрибьютор', message: '', consent: false });
+        
+        // 🔹 Редирект на страницу "Спасибо" (замените на свой путь)
+        window.location.href = '/thank-you';
+        
+        // Если используете React Router вместо window.location:
+        // import { useNavigate } from 'react-router-dom';
+        // const navigate = useNavigate();
+        // navigate('/thank-you');
+      } else {
+        throw new Error(data.message || 'Сервер вернул ошибку');
+      }
+    } catch (err) {
+      console.error('Web3Forms error:', err);
+      setError('Не удалось отправить заявку. Попробуйте Телеграм или напишите напрямую.');
+    } finally {
+      setSending(false);
     }
   };
 
@@ -69,12 +98,13 @@ export default function ContactsPage() {
     handleSendEmail();
   };
 
+  // Страница "Спасибо" (если редирект не настроен — показываем локально)
   if (sent) return (
     <div className="py-32 md:py-48"><div className="max-w-lg mx-auto px-4 text-center"><AnimatedSection>
       <div className="w-20 h-20 rounded-full bg-teal/10 flex items-center justify-center mx-auto mb-6"><CheckCircle className="text-teal" size={40} /></div>
       <h1 className="text-3xl font-bold mb-4">Заявка отправлена!</h1>
       <p className="text-text-secondary text-lg mb-3">Наш менеджер свяжется с вами в течение 24 часов.</p>
-      <p className="text-text-muted text-sm mb-8">Если почтовый клиент открылся — отправьте письмо. Это дублирующее уведомление на {company.email}.</p>
+      <p className="text-text-muted text-sm mb-8">Спасибо за обращение в компанию {company.legalName}.</p>
       <button onClick={() => { setSent(false); setForm({ name: '', company: '', phone: '', email: '', city: '', type: 'Дистрибьютор', message: '', consent: false }); }}
         className="px-6 py-3 bg-surface border border-border rounded-xl font-medium hover:bg-border transition-all">Отправить ещё</button>
     </AnimatedSection></div></div>
@@ -121,7 +151,17 @@ export default function ContactsPage() {
                 onClick={(e) => { e.preventDefault(); handleSendEmail(); }}
                 className="flex items-center justify-center gap-2 px-6 py-4 bg-accent hover:bg-accent-light disabled:opacity-50 text-white rounded-xl text-base font-bold transition-all hover:shadow-lg hover:shadow-accent/20"
               >
-                <Mail size={18} /> Отправить на почту
+                {sending ? (
+                  <>
+                    <Loader2 className="animate-spin" size={18} />
+                    Отправка...
+                  </>
+                ) : (
+                  <>
+                    <Mail size={18} />
+                    Отправить на почту
+                  </>
+                )}
               </button>
               <button
                 type="button"
