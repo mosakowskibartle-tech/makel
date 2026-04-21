@@ -24,50 +24,41 @@ export default function ContactsPage() {
   };
 
   const handleSendEmail = async () => {
-    if (!validate()) return;
-    setSending(true);
-    setError('');
+  if (!validate()) return;
+  setSending(true);
+  setError('');
 
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_key: '8ab8ad1a-e453-42b5-8803-53825fa069d9',
-          name: form.name,
-          company: form.company,
-          phone: form.phone,
-          email: form.email,
-          city: form.city,
-          type: form.type,
-          message: form.message || '—',
-          subject: `Заявка с сайта: ${form.company} — ${form.name}`,
-          from_name: 'Сайт Makel'
-        })
-      });
+  try {
+    const response = await fetch('https://formspree.io/f/mqewdjwy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name,
+        company: form.company,
+        phone: form.phone,
+        email: form.email,
+        city: form.city,
+        type: form.type,
+        message: form.message || '—',
+        _subject: `Заявка: ${form.company} — ${form.name}`,
+        _replyto: form.email || 'k.medvedev11@yandex.ru'
+      })
+    });
 
-      const data = await response.json();
-      if (data.success) {
-        // Очищаем форму и делаем редирект
-        setForm({ name: '', company: '', phone: '', email: '', city: '', type: 'Дистрибьютор', message: '', consent: false });
-        
-        // 🔹 Редирект на страницу "Спасибо" (замените на свой путь)
-        window.location.href = '/thank-you';
-        
-        // Если используете React Router вместо window.location:
-        // import { useNavigate } from 'react-router-dom';
-        // const navigate = useNavigate();
-        // navigate('/thank-you');
-      } else {
-        throw new Error(data.message || 'Сервер вернул ошибку');
-      }
-    } catch (err) {
-      console.error('Web3Forms error:', err);
-      setError('Не удалось отправить заявку. Попробуйте Телеграм или напишите напрямую.');
-    } finally {
-      setSending(false);
+    if (response.ok) {
+      setForm({ name: '', company: '', phone: '', email: '', city: '', type: 'Дистрибьютор', message: '', consent: false });
+      window.location.href = '/thank-you';
+    } else {
+      const err = await response.json();
+      throw new Error(err.error || 'Ошибка сервера');
     }
-  };
+  } catch (err) {
+    console.error('Formspree error:', err);
+    setError('Не удалось отправить. Попробуйте Телеграм.');
+  } finally {
+    setSending(false);
+  }
+};
 
   const handleSendTelegram = async () => {
     if (!validate()) return;
