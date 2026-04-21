@@ -20,8 +20,8 @@ export const company = {
   whatsapp: 'https://wa.me/74951234567',
 
   // ─── Телеграм-бот для заявок (замените на свои) ───
-  tgBotToken: 'YOUR_BOT_TOKEN',
-  tgChatId: 'YOUR_CHAT_ID',
+  tgBotToken: '8751899088:AAF5St7XXVvyS4XQon_uIVrXOyXFc_Wy0DM',
+  tgChatId: '574947799',
 
   // ─── Юридическая информация ───
   legalName: 'ООО «МАКЕЛ РУС»',
