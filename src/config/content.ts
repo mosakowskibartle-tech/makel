@@ -40,7 +40,7 @@ export const company = {
   oktmo: '45378000000',
 
   // ─── Логотип (положите файл в public/images/) ───
-  logoUrl: '/images/logo.png',  // Оставьте пустым для буквы «M», или укажите путь: '/images/logo.png'
+  logoUrl: '/images/logo.svg',  // Оставьте пустым для буквы «M», или укажите путь: '/images/logo.png'
   faviconUrl: '/favicon.ico', // Замените на '/images/favicon.png' если нужно
 };
 
