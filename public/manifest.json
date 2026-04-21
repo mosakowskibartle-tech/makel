@@ -1,0 +1,16 @@
+{
+  "name": "Makel Россия",
+  "short_name": "Makel",
+  "description": "Официальный дистрибьютор электротехники Makel в России",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFBFC",
+  "theme_color": "#C8102E",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
