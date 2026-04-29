@@ -15,9 +15,9 @@
   --c-surface-warm: #0F1115;
   --c-border: #E5E7EB;
   --c-border-light: #F0F0F0;
-  --c-text-primary: #111827;
-  --c-text-secondary: #4B5563;
-  --c-text-muted: #898b8f;
+  --c-text-primary: #18181B;
+  --c-text-secondary: #3F3F46;
+  --c-text-muted: #71717A;
   --c-accent-bg: rgba(200, 16, 46, 0.06);
   /* glass */
   --c-glass-bg: rgba(255,255,255,0.55);
@@ -32,7 +32,7 @@
   --c-card-shadow: rgba(0,0,0,0.1);
   /* dot pattern */
   --c-dot: rgba(0,0,0,0.06);
-/* Подвал: Глубокий графит (почти черный, но мягче) */
+  /* Подвал: Глубокий графит (почти черный, но мягче) */
   --c-footer-bg: #0F1115; 
   --c-footer-text: rgba(255, 255, 255, 0.7); /* Чуть ярче текст */
   --c-footer-muted: rgba(255, 255, 255, 0.45);
