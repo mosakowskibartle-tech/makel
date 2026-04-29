@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 // Подгони эти цифры под реальный SVG если точки немного съедут
 function project(lat: number, lng: number) {
-  const x = ((lng - 26) / (210 - 26)) * 100;
-  const y = (1 - (lat - 41) / (100 - 41)) * 100;
+  const x = ((lng - 26) / (170 - 26)) * 100;
+  const y = (1 - (lat - 41) / (60 - 41)) * 100;
   return {
     x: Math.max(2, Math.min(98, x)),
     y: Math.max(2, Math.min(98, y)),
