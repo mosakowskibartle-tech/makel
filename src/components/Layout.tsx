@@ -101,48 +101,61 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <main>{children}</main>
 
-      {/* Подвал — светлый */}
-      <footer className="bg-surface-warm border-t border-border">
+            {/* Подвал — теперь темный и трендовый */}
+      <footer className="bg-[var(--c-footer-bg)] border-t border-[var(--c-footer-border)]">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            
+            {/* Лого и описание */}
             <div>
-              <div className="flex items-center gap-3 mb-6"><Logo /><span className="text-xl font-extrabold tracking-wide text-text-primary">Makel</span></div>
-              <p className="text-text-muted text-sm leading-relaxed">{company.description}</p>
+              <div className="flex items-center gap-3 mb-6">
+                <Logo />
+                <span className="text-xl font-extrabold tracking-wide text-[var(--c-footer-text)]">Makel</span>
+              </div>
+              <p className="text-[var(--c-footer-muted)] text-sm leading-relaxed">{company.description}</p>
             </div>
+
+            {/* Продукция */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-5">Продукция</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-footer-muted)] mb-5">Продукция</h4>
               <div className="space-y-3">
                 {['Выключатели и розетки', 'Наружная серия', 'Модульные системы', 'Удлинители', 'Электрощиты'].map(item => (
-                  <Link key={item} to="/catalog" className="block text-sm text-text-secondary hover:text-accent transition-colors">{item}</Link>
+                  <Link key={item} to="/catalog" className="block text-sm text-[var(--c-footer-text)] hover:text-accent transition-colors">{item}</Link>
                 ))}
               </div>
             </div>
+
+            {/* Компания */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-5">Компания</h4>
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-footer-muted)] mb-5">Компания</h4>
               <div className="space-y-3">
                 {[{ l: 'О нас', p: '/about' }, { l: 'Партнёры', p: '/dealers' }, { l: 'Поддержка', p: '/support' }, { l: 'Контакты', p: '/contacts' }, { l: 'Политика конфиденциальности', p: '/privacy' }].map(item => (
-                  <Link key={item.l} to={item.p} className="block text-sm text-text-secondary hover:text-accent transition-colors">{item.l}</Link>
+                  <Link key={item.l} to={item.p} className="block text-sm text-[var(--c-footer-text)] hover:text-accent transition-colors">{item.l}</Link>
                 ))}
               </div>
             </div>
+
+            {/* Контакты */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-5">Контакты</h4>
-              <div className="space-y-3 text-sm text-text-secondary">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-[var(--c-footer-muted)] mb-5">Контакты</h4>
+              <div className="space-y-3 text-sm text-[var(--c-footer-text)]">
                 <p>{company.phone}</p>
                 <p>{company.email}</p>
                 <p>{company.address}</p>
               </div>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-border">
+
+          {/* Нижняя полоска с копирайтом */}
+          <div className="mt-12 pt-8 border-t border-[var(--c-footer-border)]">
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-              <div className="text-xs text-text-muted space-y-1">
+              <div className="text-xs text-[var(--c-footer-muted)] space-y-1">
                 <p>© {new Date().getFullYear()} {company.legalName}. Все права защищены.</p>
                 <p>ИНН {company.inn} / КПП {company.kpp} / ОГРН {company.ogrn} от {company.ogrnDate}</p>
                 <p>Юр. адрес: {company.legalAddress}. Генеральный директор: {company.ceo}</p>
                 <p>ОКВЭД: {company.okved}</p>
               </div>
-              <div className="flex items-center gap-4 text-xs text-text-muted">
+              <div className="flex items-center gap-4 text-xs text-[var(--c-footer-muted)]">
                 <Link to="/privacy" className="hover:text-accent transition-colors">Политика конфиденциальности</Link>
                 <Link to="/terms" className="hover:text-accent transition-colors">Пользовательское соглашение</Link>
               </div>
