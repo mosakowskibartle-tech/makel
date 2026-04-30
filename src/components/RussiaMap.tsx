@@ -14,11 +14,11 @@ function project(lat: number, lng: number) {
   const minLng = 19;
   const maxLng = 190;
 
-  // Считаем сразу в ПРОЦЕНТАХ, чтобы точки тянулись вместе с картой
+  // Считаем сразу в ПРОЦЕНТАХ (умножаем на 100)
   let x = ((lng - minLng) / (maxLng - minLng)) * 100;
   let y = 100 - ((lat - minLat) / (maxLat - minLat)) * 100;
 
-  // Лёгкая калибровка для компенсации кривизны SVG на востоке
+  // Лёгкая калибровка для компенсации изгиба SVG (для Сибири и ДВ)
   if (lng > 90) { y += (lng - 90) * 0.05; }
   
   return { x, y };
@@ -177,22 +177,35 @@ export default function RussiaMap() {
       {/* ═══════════════════════════════════════════
           СЛОЙ 2: ТОЧКИ ПАРТНЕРОВ
           ═══════════════════════════════════════════ */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none">
+     {/* ═══════════════════════════════════════════
+          СЛОЙ 2: ТОЧКИ ПАРТНЕРОВ
+          ═══════════════════════════════════════════ */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
         {citiesData.map((city) => {
+          // Страховка: если у города нет координат, не пытаемся его рисовать
+          if (!city.lat || !city.lng) return null;
+
           const pos = project(city.lat, city.lng);
           const count = city.partners.length;
           const isHovered = hoveredCity === city.city;
           
-          // Размер точки зависит от количества партнеров
           const size = count > 3 ? 12 : count > 1 ? 8 : 6; 
 
           return (
             <motion.div
               key={city.city}
               className="absolute cursor-pointer pointer-events-auto group"
-              // ВОТ ЗДЕСЬ ГЛАВНЫЙ ФИКС: px меняем на %
-              style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: 'translate(-50%, -50%)' }}
+              // Безопасный синтаксис для процентов:
+              style={{ 
+                left: pos.x + '%', 
+                top: pos.y + '%', 
+                transform: 'translate(-50%, -50%)' 
+              }}
               initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: Math.random() * 0.3 }}
+              onMouseEnter={() => setHoveredCity(city.city)}
+              onMouseLeave={() => setHoveredCity(null)}
             >
               {/* Пульсация */}
               <div className={`absolute inset-0 rounded-full bg-accent/30 ${isHovered ? 'animate-ping' : ''}`} 
@@ -207,7 +220,7 @@ export default function RussiaMap() {
                  <div className={`w-[40%] h-[40%] rounded-full ${isHovered ? 'bg-white' : 'bg-black/10'}`} />
               </div>
 
-              {/* Тултип */}
+              {/* Тултип (оставляем твой код как был) */}
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
