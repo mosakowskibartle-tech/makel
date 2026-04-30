@@ -4,37 +4,17 @@ import { Navigation } from 'lucide-react';
 import { partners } from '../config/partners';
 import { useTranslation } from 'react-i18next';
 
-// ═══════════════════════════════════════════
-// ПРОЕКЦИЯ КООРДИНАТ (ИСПРАВЛЕННАЯ)
-// Теперь считает в процентах для резинового контейнера
-// ═══════════════════════════════════════════
-function project(lat: number, lng: number) {
-  const minLat = 41;
-  const maxLat = 82;
-  const minLng = 19;
-  const maxLng = 190;
-
-  // Считаем сразу в ПРОЦЕНТАХ (умножаем на 100)
-  let x = ((lng - minLng) / (maxLng - minLng)) * 100;
-  let y = 100 - ((lat - minLat) / (maxLat - minLat)) * 100;
-
-  // Лёгкая калибровка для компенсации изгиба SVG (для Сибири и ДВ)
-  if (lng > 90) { y += (lng - 90) * 0.05; }
-  
-  return { x, y };
-}
-
 export default function RussiaMap() {
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const { t } = useTranslation();
 
   // Группируем партнеров по городам
   const citiesData = useMemo(() => {
-    const map = new Map<string, { city: string; lat: number; lng: number; partners: typeof partners }>();
+    const map = new Map<string, { city: string; x: number; y: number; partners: typeof partners }>();
     
     partners.forEach(p => {
       if (!map.has(p.city)) {
-        map.set(p.city, { city: p.city, lat: p.lat, lng: p.lng, partners: [] });
+        map.set(p.city, { city: p.city, x: p.x, y: p.y, partners: [] });
       }
       map.get(p.city)?.partners.push(p);
     });
@@ -49,16 +29,16 @@ export default function RussiaMap() {
   };
 
   return (
-    // ИСПРАВЛЕННЫЕ ПРОПОРЦИИ: aspect-[10/6] чтобы совпадало с viewBox="0 0 1000 600"
-    <div className="relative w-full rounded-3xl overflow-hidden border border-border bg-bg-card shadow-lg aspect-[10/6] group">
+    <div 
+      className="relative w-full rounded-3xl overflow-hidden border border-border bg-bg-card shadow-lg group"
+      style={{ aspectRatio: '1000 / 600' }} // Жесткая синхронизация с пропорциями SVG
+    >
       
-      {/* ═══════════════════════════════════════════
-          СЛОЙ 1: КАРТА РЕГИОНОВ (SVG)
-          ═══════════════════════════════════════════ */}
+      {/* СЛОЙ 1: КАРТА РЕГИОНОВ (SVG) */}
       <svg 
         viewBox="0 0 1000 600" 
         className="absolute inset-0 w-full h-full drop-shadow-sm opacity-80 dark:opacity-60"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="none"
       >
         <style>{`
           .region-path {
@@ -177,28 +157,21 @@ export default function RussiaMap() {
       {/* ═══════════════════════════════════════════
           СЛОЙ 2: ТОЧКИ ПАРТНЕРОВ
           ═══════════════════════════════════════════ */}
-     {/* ═══════════════════════════════════════════
-          СЛОЙ 2: ТОЧКИ ПАРТНЕРОВ
-          ═══════════════════════════════════════════ */}
+    {/* СЛОЙ 2: ТОЧКИ ПАРТНЕРОВ */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
         {citiesData.map((city) => {
-          // Страховка: если у города нет координат, не пытаемся его рисовать
-          if (!city.lat || !city.lng) return null;
-
-          const pos = project(city.lat, city.lng);
           const count = city.partners.length;
           const isHovered = hoveredCity === city.city;
-          
           const size = count > 3 ? 12 : count > 1 ? 8 : 6; 
 
           return (
             <motion.div
               key={city.city}
               className="absolute cursor-pointer pointer-events-auto group"
-              // Безопасный синтаксис для процентов:
+              // СТАВИМ ТОЧКИ ПО ИХ ПРОЦЕНТАМ:
               style={{ 
-                left: pos.x + '%', 
-                top: pos.y + '%', 
+                left: `${city.x}%`, 
+                top: `${city.y}%`, 
                 transform: 'translate(-50%, -50%)' 
               }}
               initial={{ scale: 0, opacity: 0 }}
