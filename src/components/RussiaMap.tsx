@@ -5,8 +5,8 @@ import { partners } from '../config/partners';
 import { useTranslation } from 'react-i18next';
 
 // ═══════════════════════════════════════════
-// ПРОЕКЦИЯ КООРДИНАТ
-// Настроена под viewBox="0 0 1000 600" конкретного SVG ниже
+// ПРОЕКЦИЯ КООРДИНАТ (ИСПРАВЛЕННАЯ)
+// Теперь считает в процентах для резинового контейнера
 // ═══════════════════════════════════════════
 function project(lat: number, lng: number) {
   const minLat = 41;
@@ -18,7 +18,7 @@ function project(lat: number, lng: number) {
   let x = ((lng - minLng) / (maxLng - minLng)) * 100;
   let y = 100 - ((lat - minLat) / (maxLat - minLat)) * 100;
 
-  // Лёгкая калибровка для компенсации кривизны SVG
+  // Лёгкая калибровка для компенсации кривизны SVG на востоке
   if (lng > 90) { y += (lng - 90) * 0.05; }
   
   return { x, y };
@@ -49,6 +49,7 @@ export default function RussiaMap() {
   };
 
   return (
+    // ИСПРАВЛЕННЫЕ ПРОПОРЦИИ: aspect-[10/6] чтобы совпадало с viewBox="0 0 1000 600"
     <div className="relative w-full rounded-3xl overflow-hidden border border-border bg-bg-card shadow-lg aspect-[10/6] group">
       
       {/* ═══════════════════════════════════════════
@@ -72,7 +73,7 @@ export default function RussiaMap() {
             stroke: #1F2937;
           }
           .region-path:hover {
-            fill: #C8102E; /* Твой красный акцент при наведении */
+            fill: #C8102E; /* Красный акцент при наведении */
             stroke: #FFFFFF;
             z-index: 10;
           }
