@@ -11,14 +11,16 @@
  */
 
 export const downloadLinks: Record<string, string> = {
-  'Общий каталог Makel 2024': 'https://makel.com.tr/upload/katalog/MAKEL_KATALOG_2024.pdf',
-  'Серия Лилиум': 'https://makel.com.tr/upload/katalog/LILLIUM.pdf',
-  'Серия Мимоза': 'https://makel.com.tr/upload/katalog/MIMOZA.pdf',
-  'Серия Дефне': 'https://makel.com.tr/upload/katalog/DEFNE.pdf',
-  'Серия Манолья': 'https://makel.com.tr/upload/katalog/MANOLYA.pdf',
-  'Модульные системы': 'https://makel.com.tr/upload/katalog/MODULAR.pdf',
-  'Наружная серия': 'https://makel.com.tr/upload/katalog/SIVA_USTU.pdf',
-  'Электрощиты и автоматика': 'https://makel.com.tr/upload/katalog/PANO.pdf',
-  'Прайс-лист 2024': '#',   // Замените на реальную ссылку
-  'Сертификаты': '#',        // Замените на реальную ссылку
+  'Общий каталог Makel 2024': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/Каталог%20продукции.pdf',
+  'Серия Лилиум': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/lillium%20natural%20kare.pdf',
+  'Серия Мимоза': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/mimoza.pdf',
+  'Серия Дефне': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/defne.pdf',
+  'Серия Манолья': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/Каталог%20продукции.pdf',
+  'Серия Кареа': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/karea.pdf',
+  'Модульные системы': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/Каталог%20продукции.pdf',
+  'Наружная серия': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/наружная%20серия%20IP20.pdf',
+  'Электрощиты и автоматика': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/Каталог%20электрощитки.pdf',
+  'Аксессуары': 'https://cloud.mail.ru/public/uaSL/iE9F8SULe/аксессуары.pdf',
+  'Прайс-лист 2026': 'https://cloud.mail.ru/public/RFeV/MQugpkhog',   // Замените на реальную ссылку
+  'Сертификаты': 'https://cloud.mail.ru/public/84HY/w85842Qo8',        // Замените на реальную ссылку
 };

@@ -9,19 +9,18 @@ import { useTranslation } from 'react-i18next';
 // Настроена под viewBox="0 0 1000 600" конкретного SVG ниже
 // ═══════════════════════════════════════════
 function project(lat: number, lng: number) {
-  // Границы карты для масштабирования
   const minLat = 41;
   const maxLat = 82;
   const minLng = 19;
-  const maxLng = 190; // Чуть шире стандартных 180 для захвата Чукотки
+  const maxLng = 190;
 
-  const svgWidth = 1000;
-  const svgHeight = 600;
+  // Считаем сразу в ПРОЦЕНТАХ, чтобы точки тянулись вместе с картой
+  let x = ((lng - minLng) / (maxLng - minLng)) * 100;
+  let y = 100 - ((lat - minLat) / (maxLat - minLat)) * 100;
 
-  // Вычисляем X и Y в процентах или пикселях SVG
-  const x = ((lng - minLng) / (maxLng - minLng)) * svgWidth;
-  const y = svgHeight - ((lat - minLat) / (maxLat - minLat)) * svgHeight;
-
+  // Лёгкая калибровка для компенсации кривизны SVG
+  if (lng > 90) { y += (lng - 90) * 0.05; }
+  
   return { x, y };
 }
 
@@ -50,7 +49,7 @@ export default function RussiaMap() {
   };
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden border border-border bg-bg-card shadow-lg aspect-[1.8/1] md:aspect-[1.9/1] group">
+    <div className="relative w-full rounded-3xl overflow-hidden border border-border bg-bg-card shadow-lg aspect-[10/6] group">
       
       {/* ═══════════════════════════════════════════
           СЛОЙ 1: КАРТА РЕГИОНОВ (SVG)
@@ -190,12 +189,9 @@ export default function RussiaMap() {
             <motion.div
               key={city.city}
               className="absolute cursor-pointer pointer-events-auto group"
-              style={{ left: `${pos.x}px`, top: `${pos.y}px`, transform: 'translate(-50%, -50%)' }}
+              // ВОТ ЗДЕСЬ ГЛАВНЫЙ ФИКС: px меняем на %
+              style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: 'translate(-50%, -50%)' }}
               initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: Math.random() * 0.3 }}
-              onMouseEnter={() => setHoveredCity(city.city)}
-              onMouseLeave={() => setHoveredCity(null)}
             >
               {/* Пульсация */}
               <div className={`absolute inset-0 rounded-full bg-accent/30 ${isHovered ? 'animate-ping' : ''}`} 
