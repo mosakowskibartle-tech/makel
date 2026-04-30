@@ -24,8 +24,11 @@ export default function DealersPage() {
   );
 
   // Разделяем на категории
-  const federalPartners = filtered.filter(p => FEDERAL_NETWORKS.includes(p.name));
-  const regionalPartners = filtered.filter(p => !FEDERAL_NETWORKS.includes(p.name));
+  const rawFederal = filtered.filter(p => FEDERAL_NETWORKS.includes(p.name));
+  const federalPartners = Array.from(new Map(rawFederal.map(p => [p.name, p])).values());
+  
+  const rawRegional = filtered.filter(p => !FEDERAL_NETWORKS.includes(p.name));
+  const regionalPartners = Array.from(new Map(rawRegional.map(p => [p.name, p])).values());
 
   return (
     <div>
